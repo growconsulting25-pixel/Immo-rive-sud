@@ -22,8 +22,9 @@
     --radius:16px; --shadow:0 20px 50px -20px rgba(20,33,61,.35);
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none!important}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-  body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  body{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
   img{max-width:100%;display:block}
   a{color:inherit}
   .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
@@ -36,8 +37,8 @@
   .nav-cta:hover{background:var(--blue-2)}
 
   /* Hero */
-  .hero{background:radial-gradient(1200px 500px at 85% -10%,var(--navy-3),transparent 60%),var(--navy);color:#fff;padding:56px 0 90px}
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
+  .hero{flex:1;display:flex;align-items:center;background:radial-gradient(1200px 500px at 85% -10%,var(--navy-3),transparent 60%),var(--navy);color:#fff;padding:48px 0}
+  .hero-grid{width:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
   .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(25,116,195,.18);border:1px solid rgba(110,170,230,.35);color:#CFE3F8;font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px;letter-spacing:.02em}
   .badge i{width:8px;height:8px;border-radius:50%;background:#4CC38A;box-shadow:0 0 0 4px rgba(76,195,138,.2)}
   h1{font-size:clamp(34px,5vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.02em;margin:20px 0 18px}
@@ -82,8 +83,29 @@
   .input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,116,195,.15)}
   .input.bad{border-color:var(--err);box-shadow:0 0 0 4px rgba(217,56,56,.1)}
   .input-ic{position:relative}
-  .input-ic svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none}
+  .input-ic>svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none}
   .input-ic .input{padding-left:46px}
+  .ac{position:relative}
+  .ac-list{list-style:none;position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1.5px solid var(--line);border-radius:14px;box-shadow:0 18px 40px -16px rgba(20,33,61,.35);overflow:hidden;z-index:10;display:none}
+  .ac-list.open{display:block}
+  .ac-list li{display:flex;gap:12px;align-items:center;padding:12px 14px;cursor:pointer;border-bottom:1px solid #EEF2F7}
+  .ac-list li:last-child{border:0}
+  .ac-list li[aria-selected=true],.ac-list li:hover{background:var(--blue-soft)}
+  .ac-list li b{display:block;font-size:15px}
+  .ac-list li span{display:block;font-size:13px;color:var(--muted)}
+  .ac-list li.note{cursor:default;color:var(--muted);font-size:14px;background:#fff}
+  .ac-list .pin{flex:none;width:32px;height:32px;border-radius:50%;background:var(--bg);display:grid;place-items:center}
+  .ac-list .attr{font-size:10.5px;color:#9AA5B8;padding:6px 14px;text-align:right;cursor:default;background:#fff}
+  .spin{position:absolute;right:14px;top:50%;width:18px;height:18px;margin-top:-9px;border:2.5px solid var(--blue-soft);border-top-color:var(--blue);border-radius:50%;animation:rot .7s linear infinite;display:none}
+  .spin.on{display:block}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .link{background:none;border:0;font:inherit;font-size:13.5px;font-weight:600;color:var(--blue);cursor:pointer;padding:8px 0 0;text-decoration:underline;text-underline-offset:3px}
+  .addr-ok{display:flex;gap:12px;align-items:center;border:1.5px solid #9ED9B8;background:#F1FBF5;border-radius:14px;padding:14px 16px;margin-bottom:14px}
+  .addr-ok svg{flex:none}
+  .addr-ok div{flex:1;min-width:0}
+  .addr-ok b{display:block;font-size:16px}
+  .addr-ok span{display:block;font-size:13.5px;color:var(--muted)}
+  .addr-ok .link{padding:0;flex:none}
   .err{color:var(--err);font-size:13px;font-weight:600;margin-top:6px;display:none}
   .err.show{display:block}
   .btn{width:100%;margin-top:8px;border:0;border-radius:14px;background:var(--blue);color:#fff;font:inherit;font-size:17px;font-weight:800;padding:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s,transform .1s;box-shadow:0 10px 24px -10px rgba(25,116,195,.8)}
@@ -107,88 +129,29 @@
   .recap b{text-align:right}
   .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 
-  /* Sections */
-  section{padding:84px 0}
-  .eyebrow{color:var(--blue);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
-  h2{font-size:clamp(28px,3.6vw,40px);line-height:1.12;letter-spacing:-.02em;font-weight:800;margin:10px 0 14px}
-  .center{text-align:center;max-width:680px;margin:0 auto 44px}
-  .center p{color:var(--muted);font-size:17px}
-
-  /* Calculator */
-  .calc{background:#fff;border-radius:22px;box-shadow:0 10px 40px -24px rgba(20,33,61,.35);padding:34px;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;max-width:980px;margin:0 auto}
-  .calc label{font-weight:700;font-size:15px}
-  .price{font-size:40px;font-weight:800;letter-spacing:-.02em;margin:6px 0 14px}
-  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--blue) var(--p,40%),var(--blue-soft) var(--p,40%));outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:4px solid var(--blue);box-shadow:0 4px 12px rgba(0,0,0,.2);cursor:pointer}
-  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--blue);cursor:pointer}
-  .range-l{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:8px}
-  .cmp{display:grid;gap:12px}
-  .cmp div{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:12px;background:var(--bg);font-weight:600}
-  .cmp .us{background:var(--blue-soft);color:var(--blue-2)}
-  .cmp .save{background:var(--navy);color:#fff;padding:18px 16px}
-  .cmp .save b{font-size:26px;color:#7CC0FF}
-  .calc .note{font-size:12px;color:var(--muted);margin-top:10px}
-
-  /* How */
-  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .how article{background:#fff;border-radius:18px;padding:28px;border:1px solid var(--line)}
-  .how .n{width:44px;height:44px;border-radius:12px;background:var(--navy);color:#fff;font-weight:800;display:grid;place-items:center;margin-bottom:16px}
-  .how h3{font-size:19px;margin-bottom:6px}
-  .how p{color:var(--muted);font-size:15.5px}
-
-  /* Included */
-  .inc{background:var(--navy);color:#fff}
-  .inc h2{color:#fff}
-  .inc .center p{color:#B9C6DD}
-  .inc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px;max-width:860px;margin:0 auto}
-  .inc-grid div{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-weight:600}
-
-  /* FAQ */
-  .faq{max-width:760px;margin:0 auto}
-  details{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:0 20px}
-  summary{cursor:pointer;list-style:none;font-weight:700;font-size:16.5px;padding:18px 0;display:flex;justify-content:space-between;gap:16px}
-  summary::-webkit-details-marker{display:none}
-  summary::after{content:"+";font-size:22px;color:var(--blue);line-height:1}
-  details[open] summary::after{content:"–"}
-  details p{color:var(--muted);padding-bottom:18px}
-
-  .final{background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;text-align:center;border-radius:24px;padding:54px 24px;max-width:980px;margin:0 auto}
-  .final h2{color:#fff}
-  .final p{color:#D6E4F7;margin-bottom:24px}
-  .final a{display:inline-block;background:#fff;color:var(--navy);text-decoration:none;font-weight:800;padding:16px 28px;border-radius:999px}
-
-  footer{background:var(--navy-2);color:#9FAECB;font-size:14px;padding:40px 0 calc(40px + env(safe-area-inset-bottom))}
-  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
-  .foot img{height:44px;width:auto;margin-bottom:10px}
-  .legal{font-size:12px;margin-top:22px;border-top:1px solid rgba(255,255,255,.08);padding-top:18px;line-height:1.6}
-
-  /* Mobile sticky CTA */
-  .sticky{display:none}
+  footer{background:var(--navy-2);color:#8D9CB9;font-size:12px;padding:16px 0 calc(16px + env(safe-area-inset-bottom));line-height:1.6}
 
   @media (max-width:900px){
     .hero{padding:28px 0 56px}
     .hero-grid{grid-template-columns:1fr;gap:28px}
     .hero-copy .trust{display:none}
     .lead{font-size:16.5px}
-    .calc{grid-template-columns:1fr;padding:24px}
-    .how{grid-template-columns:1fr}
-    .inc-grid{grid-template-columns:1fr}
-    section{padding:60px 0}
+    .hero-copy .badge{display:none}
     .trust-m{display:grid!important}
   }
   @media (max-width:520px){
     .wrap{padding:0 16px}
     .nav{height:64px}.nav img{height:48px}
     .nav-cta{font-size:14px;padding:9px 14px}
-    h1{margin:14px 0 12px}
+    h1{margin:0 0 10px;font-size:30px}
+    .lead{font-size:15px}
+    .hero{padding:20px 0 32px}
+    .hero-grid{gap:20px}
     .card{border-radius:18px}
     .card-top{padding:16px 18px 0}
     .steps{padding:18px 18px 22px;min-height:0}
     .q{font-size:21px}
     .row2{grid-template-columns:1fr}
-    .sticky{display:block;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;transform:translateY(140%);transition:transform .3s}
-    .sticky.show{transform:none}
-    .sticky a{display:block;text-align:center;background:var(--blue);color:#fff;text-decoration:none;font-weight:800;padding:16px;border-radius:14px;box-shadow:0 12px 30px -8px rgba(20,33,61,.6)}
   }
   .trust-m{display:none;list-style:none;gap:14px;margin-top:6px}
   .trust-m li{display:flex;gap:12px;align-items:center;color:#C9D4E8;font-size:14.5px}
@@ -200,7 +163,7 @@
 <header>
   <div class="wrap nav">
     <a href="#" aria-label="Immo Rive-Sud, accueil"><img src="assets/logo-wide.jpg" alt="Immo Rive-Sud"></a>
-    <a class="nav-cta" href="#formulaire">Vendre à 1%</a>
+    <a class="nav-cta" href="tel:+14505550000">📞 450 555-0000</a><!-- À COMPLÉTER : vrai numéro -->
   </div>
 </header>
 
@@ -210,7 +173,7 @@
     <div class="hero-copy">
       <span class="badge"><i></i>Courtage immobilier · Rive-Sud de Montréal</span>
       <h1>Vendez votre propriété pour <span class="hl">1% de commission</span> seulement.</h1>
-      <p class="lead">Un service de courtage complet, avec le même accompagnement, pour une fraction du prix. Remplissez le formulaire en 60 secondes et un courtier vous rappelle.</p>
+      <p class="lead">Un service de courtage complet, pour une fraction du prix. Répondez à 5 questions et un courtier vous rappelle.</p>
       <ul class="trust">
         <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Gardez des milliers de dollars</b><span>1% au lieu des 4 à 5% habituellement demandés.</span></div></li>
         <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span><div><b>Un service complet</b><span>Mise en marché, Centris, visites et négociation.</span></div></li>
@@ -241,13 +204,27 @@
           <!-- 1. Adresse -->
           <div class="step active" data-step="1">
             <p class="q">Quelle est l'adresse de la propriété à vendre?</p>
-            <p class="sub">On s'en sert pour estimer combien vous pourriez économiser.</p>
-            <div class="field">
-              <div class="input-ic">
+            <p class="sub">Tapez votre adresse et choisissez-la dans la liste.</p>
+            <input type="hidden" name="adresse" id="adresse">
+            <input type="hidden" name="ville"><input type="hidden" name="code_postal"><input type="hidden" name="lat"><input type="hidden" name="lon"><input type="hidden" name="adresse_verifiee">
+            <div class="field" id="addrSearch">
+              <div class="input-ic ac">
                 <svg width="20" height="20" fill="none" stroke="#1974C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                <input class="input" id="adresse" name="adresse" type="text" autocomplete="street-address" placeholder="Ex. 123 rue Principale, Longueuil" aria-label="Adresse de la propriété">
+                <input class="input" id="addrInput" type="text" autocomplete="off" spellcheck="false" placeholder="Commencez par le numéro civique…" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="addrList" aria-label="Adresse de la propriété">
+                <span class="spin" id="addrSpin" aria-hidden="true"></span>
+                <ul class="ac-list" id="addrList" role="listbox"></ul>
               </div>
-              <p class="err" id="err-adresse">Entrez l'adresse de la propriété pour continuer.</p>
+              <p class="err" id="err-adresse">Choisissez votre adresse dans la liste.</p>
+              <button type="button" class="link" id="manualBtn">Mon adresse n'apparaît pas dans la liste</button>
+            </div>
+            <div class="addr-ok" id="addrOk" hidden>
+              <svg width="22" height="22" fill="none" stroke="#12A150" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><path d="m9 10 2 2 4-4"/></svg>
+              <div><b id="addrL1"></b><span id="addrL2"></span></div>
+              <button type="button" class="link" id="addrEdit">Modifier</button>
+            </div>
+            <div class="field" id="unitField" hidden>
+              <label for="unite">Appartement / unité <span style="font-weight:500;color:var(--muted)">(si applicable)</span></label>
+              <input class="input" id="unite" name="unite" type="text" autocomplete="address-line2" placeholder="Ex. 204" maxlength="12">
             </div>
             <button type="button" class="btn" data-next>Continuer
               <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -342,116 +319,13 @@
   </div>
 </div>
 
-<!-- CALCULATOR -->
-<section id="economies">
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Calculateur d'économies</span>
-      <h2>Combien gardez-vous dans vos poches?</h2>
-      <p>Glissez le curseur selon la valeur approximative de votre propriété.</p>
-    </div>
-    <div class="calc">
-      <div>
-        <label for="val">Valeur de la propriété</label>
-        <div class="price" id="valOut">500 000 $</div>
-        <input type="range" id="val" min="200000" max="1500000" step="10000" value="500000" aria-label="Valeur de la propriété">
-        <div class="range-l"><span>200 000 $</span><span>1 500 000 $</span></div>
-        <p class="note">Estimation de la commission seulement, avant taxes. La commission traditionnelle est calculée ici à 5%, mais elle varie d'une agence à l'autre.</p>
-      </div>
-      <div class="cmp">
-        <div><span>Commission traditionnelle (5%)</span><b id="trad">25 000 $</b></div>
-        <div class="us"><span>Immo Rive-Sud (1%)</span><b id="ours">5 000 $</b></div>
-        <div class="save"><span>Vous économisez</span><b id="save">20 000 $</b></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Comment ça marche</span>
-      <h2>Trois étapes simples</h2>
-    </div>
-    <div class="how">
-      <article><div class="n">1</div><h3>Remplissez le formulaire</h3><p>60 secondes : votre adresse, votre délai et vos coordonnées.</p></article>
-      <article><div class="n">2</div><h3>Un courtier vous rappelle</h3><p>Au moment qui vous convient, pour discuter de votre propriété et du prix à demander.</p></article>
-      <article><div class="n">3</div><h3>Vendez à 1%</h3><p>Mise en marché, visites et négociation. Vous gardez la différence.</p></article>
-    </div>
-  </div>
-</section>
-
-<!-- INCLUDED -->
-<section class="inc">
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow" style="color:#7CC0FF">Tout est inclus</span>
-      <h2>Un service complet pour 1%</h2>
-      <p>Pas une version allégée. Tout ce qu'il faut pour vendre au meilleur prix.</p>
-    </div>
-    <div class="inc-grid">
-      <div>✔️ Inscription sur Centris.ca</div>
-      <div>✔️ Analyse comparative du marché</div>
-      <div>✔️ Photos professionnelles</div>
-      <div>✔️ Publicité sur les réseaux sociaux</div>
-      <div>✔️ Gestion des visites</div>
-      <div>✔️ Négociation des offres</div>
-      <div>✔️ Suivi jusque chez le notaire</div>
-      <div>✔️ Courtier immobilier certifié OACIQ</div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section>
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">Questions fréquentes</span>
-      <h2>Vos questions, nos réponses</h2>
-    </div>
-    <div class="faq">
-      <details><summary>Est-ce vraiment 1% de commission?</summary><p>Oui. Notre commission est de 1% du prix de vente, plus taxes. Votre courtier vous remettra tous les détails par écrit avant la signature du contrat de courtage.</p></details>
-      <details><summary>Comment pouvez-vous offrir 1%?</summary><p>Nous misons sur un processus efficace et un volume de ventes plus élevé sur la Rive-Sud. Ça nous permet de réduire la commission sans réduire le service.</p></details>
-      <details><summary>Est-ce que ma propriété sera sur Centris?</summary><p>Oui. Votre propriété est inscrite sur Centris.ca, comme avec n'importe quel courtier.</p></details>
-      <details><summary>Est-ce que je m'engage en remplissant le formulaire?</summary><p>Non. Le formulaire sert seulement à ce qu'un courtier vous rappelle. Vous décidez ensuite si l'offre vous convient.</p></details>
-      <details><summary>Quels secteurs desservez-vous?</summary><p>Toute la Rive-Sud de Montréal : Longueuil, Brossard, Saint-Hubert, Boucherville, Saint-Lambert, La Prairie, Candiac, Chambly, Saint-Bruno et les environs.</p></details>
-    </div>
-  </div>
-</section>
-
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="final">
-      <h2>Prêt à garder plus de votre vente?</h2>
-      <p>60 secondes, aucun engagement.</p>
-      <a href="#formulaire">Commencer maintenant</a>
-    </div>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
-    <div class="foot">
-      <div>
-        <img src="assets/logo-wide.jpg" alt="Immo Rive-Sud">
-        <div>Courtage immobilier sur la Rive-Sud de Montréal</div>
-      </div>
-      <div>
-        <!-- À COMPLÉTER : coordonnées réelles -->
-        <div>📞 <a href="tel:+14505550000">450 555-0000</a></div>
-        <div>✉️ <a href="mailto:info@immorivesud.ca">info@immorivesud.ca</a></div>
-      </div>
-    </div>
-    <div class="legal">
-      <!-- À COMPLÉTER : la publicité d'un courtier doit l'identifier (nom, titre, agence). -->
-      [Nom du courtier], courtier immobilier résidentiel · [Nom de l'agence], agence immobilière. Commission de 1% du prix de vente, plus taxes, selon les conditions prévues au contrat de courtage. Les économies affichées sont des estimations.<br>
-      Vos renseignements personnels sont traités conformément à la Loi 25 sur la protection des renseignements personnels au Québec. © <span id="yr"></span> Immo Rive-Sud.
-    </div>
+    <!-- À COMPLÉTER : la publicité d'un courtier doit l'identifier (nom, titre, agence). -->
+    © <span id="yr"></span> Immo Rive-Sud · [Nom du courtier], courtier immobilier résidentiel · [Nom de l'agence], agence immobilière.
+    Commission de 1% du prix de vente, plus taxes, selon les conditions du contrat de courtage. Renseignements traités conformément à la Loi 25.
   </div>
 </footer>
-
-<div class="sticky" id="sticky"><a href="#formulaire">Vendre à 1% de commission →</a></div>
 
 <script>
 /* ========= CONFIGURATION =========
@@ -499,7 +373,19 @@ const WEBHOOK_URL = "";
   const digits = v => v.replace(/\D/g,'');
   function validate(n){
     const f = form.elements;
-    if (n === 1) return setErr('adresse', f.adresse.value.trim().length < 5);
+    if (n === 1) {
+      if (addr.manual) {
+        const v = addrInput.value.trim();
+        if (/\d/.test(v) && v.length >= 8) { setAddress({manual: v}); return setErr('adresse', false); }
+        addrInput.classList.add('bad'); document.getElementById('err-adresse').textContent = 'Entrez l\'adresse complète : numéro, rue et ville.';
+        return setErr('adresse', true);
+      }
+      if (!addr.picked) { addrInput.classList.add('bad'); addrInput.focus(); }
+      const ok = !!addr.picked;
+      document.getElementById('err-adresse').classList.toggle('show', !ok);
+      if (ok) setAddress(addr.picked);
+      return ok;
+    }
     if (n === 4){
       let ok = setErr('nom', f.nom.value.trim().length < 2);
       const d = digits(f.telephone.value);
@@ -514,6 +400,115 @@ const WEBHOOK_URL = "";
 
   form.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => { if (validate(cur)) show(cur + 1, 1); }));
   back.addEventListener('click', () => cur > 1 && show(cur - 1, -1));
+
+  // ===== Sélecteur d'adresse (Photon / OpenStreetMap, sans clé API) =====
+  const addrInput = document.getElementById('addrInput');
+  const addrList = document.getElementById('addrList');
+  const addrSpin = document.getElementById('addrSpin');
+  const addr = {picked: null, manual: false, items: [], idx: -1, timer: 0, seq: 0, unitFromQuery: ''};
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const unitInput = document.getElementById('unite');
+
+  function line1(p){ return [p.housenumber, p.street || p.name].filter(Boolean).join(' '); }
+  function line2(p){ return [p.city || p.district || p.county, 'QC', p.postcode].filter(Boolean).join(', ').replace(', QC,', ', QC'); }
+
+  function setAddress(a){
+    const f = form.elements, u = unitInput.value.trim();
+    if (a.manual){
+      f.adresse.value = (u ? u + '-' : '') + a.manual;
+      f.ville.value = f.code_postal.value = f.lat.value = f.lon.value = '';
+      f.adresse_verifiee.value = 'non';
+    } else {
+      f.adresse.value = (u ? u + '-' : '') + a.l1 + ', ' + a.l2;
+      f.ville.value = a.city; f.code_postal.value = a.postcode; f.lat.value = a.lat; f.lon.value = a.lon;
+      f.adresse_verifiee.value = 'oui';
+    }
+  }
+
+  function closeList(){ addrList.classList.remove('open'); addrInput.setAttribute('aria-expanded','false'); addr.idx = -1; }
+  function renderList(){
+    const q = addrInput.value.trim();
+    let html = addr.items.map((it, i) => `<li role="option" id="ac-${i}" data-i="${i}" aria-selected="${i === addr.idx}">
+      <span class="pin"><svg width="16" height="16" fill="none" stroke="#1974C3" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+      <div><b>${esc(it.l1)}</b><span>${esc(it.l2)}</span></div></li>`).join('');
+    if (!addr.items.length) html = `<li class="note">${/^\d/.test(q) ? 'Aucune adresse trouvée. Vérifiez l\'orthographe ou utilisez le lien ci-dessous.' : 'Commencez par le numéro civique (ex. 1250 rue Saint-Charles).'}</li>`;
+    else html += '<li class="attr">© OpenStreetMap</li>';
+    addrList.innerHTML = html;
+    addrList.classList.add('open'); addrInput.setAttribute('aria-expanded','true');
+    addrInput.setAttribute('aria-activedescendant', addr.idx >= 0 ? 'ac-' + addr.idx : '');
+  }
+
+  async function search(raw){
+    // « 12-345 rue X » ou « 345 rue X app 12 » : on sépare l'unité
+    let q = raw, unit = '';
+    let m = q.match(/^\s*([0-9]+[A-Za-z]?)\s*-\s*([0-9]+.*)$/); if (m){ unit = m[1]; q = m[2]; }
+    m = q.match(/^(.*?)[,\s]+(?:app\.?|apt\.?|appartement|unité|unit|suite|#)\s*([0-9A-Za-z]+)\s*$/i); if (m){ unit = m[2]; q = m[1]; }
+    addr.unitFromQuery = unit;
+    if (q.length < 3){ closeList(); return; }
+    const my = ++addr.seq; addrSpin.classList.add('on');
+    try {
+      const url = 'https://photon.komoot.io/api/?' + new URLSearchParams({q, limit: 8, lang: 'fr', lat: 45.5, lon: -73.45, layer: 'house'});
+      const res = await fetch(url); const js = await res.json();
+      if (my !== addr.seq) return;
+      const seen = new Set();
+      addr.items = js.features.filter(f => f.properties.state === 'Québec' && f.properties.housenumber).map(f => {
+        const p = f.properties;
+        return {l1: line1(p), l2: line2(p), city: p.city || p.district || '', postcode: p.postcode || '', lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0]};
+      }).filter(it => { const k = it.l1 + it.l2; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 5);
+      addr.idx = addr.items.length ? 0 : -1;
+      renderList();
+    } catch (e) {
+      if (my === addr.seq){ addr.items = []; addrList.innerHTML = '<li class="note">Recherche indisponible. Utilisez le lien ci-dessous pour entrer votre adresse.</li>'; addrList.classList.add('open'); }
+    } finally { if (my === addr.seq) addrSpin.classList.remove('on'); }
+  }
+
+  function pick(i){
+    const it = addr.items[i]; if (!it) return;
+    addr.picked = it; closeList();
+    if (addr.unitFromQuery && !unitInput.value) unitInput.value = addr.unitFromQuery;
+    document.getElementById('addrL1').textContent = it.l1;
+    document.getElementById('addrL2').textContent = it.l2;
+    document.getElementById('addrSearch').hidden = true;
+    document.getElementById('addrOk').hidden = false;
+    document.getElementById('unitField').hidden = false;
+    setErr('adresse', false);
+    if (window.innerWidth > 520) unitInput.focus();
+  }
+
+  addrInput.addEventListener('input', () => {
+    addr.picked = null; addrInput.classList.remove('bad'); document.getElementById('err-adresse').classList.remove('show');
+    if (addr.manual) return;
+    clearTimeout(addr.timer); addr.timer = setTimeout(() => search(addrInput.value), 220);
+  });
+  addrInput.addEventListener('keydown', e => {
+    if (addr.manual || !addrList.classList.contains('open') || !addr.items.length){
+      if (e.key === 'Enter' && !addr.manual){ e.preventDefault(); e.stopPropagation(); validate(1); }
+      return;
+    }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+      e.preventDefault(); const n = addr.items.length;
+      addr.idx = (addr.idx + (e.key === 'ArrowDown' ? 1 : -1) + n) % n; renderList();
+    } else if (e.key === 'Enter'){ e.preventDefault(); e.stopPropagation(); pick(Math.max(addr.idx, 0)); }
+    else if (e.key === 'Escape'){ closeList(); }
+  });
+  addrList.addEventListener('mousedown', e => { const li = e.target.closest('li[data-i]'); if (li){ e.preventDefault(); pick(+li.dataset.i); } });
+  addrInput.addEventListener('blur', () => setTimeout(closeList, 120));
+  addrInput.addEventListener('focus', () => { if (addr.items.length && !addr.picked) renderList(); });
+
+  document.getElementById('addrEdit').addEventListener('click', () => {
+    addr.picked = null;
+    document.getElementById('addrOk').hidden = true;
+    document.getElementById('addrSearch').hidden = false;
+    addrInput.focus(); addrInput.select();
+  });
+  document.getElementById('manualBtn').addEventListener('click', e => {
+    addr.manual = !addr.manual; closeList();
+    e.target.textContent = addr.manual ? 'Rechercher mon adresse dans la liste' : 'Mon adresse n\'apparaît pas dans la liste';
+    addrInput.placeholder = addr.manual ? 'Numéro, rue et ville' : 'Commencez par le numéro civique…';
+    document.getElementById('unitField').hidden = !addr.manual;
+    document.getElementById('err-adresse').textContent = 'Choisissez votre adresse dans la liste.';
+    setErr('adresse', false); addrInput.focus();
+  });
 
   // Choix de réponses : sélection + avance automatique (style Facebook)
   form.querySelectorAll('[data-field]').forEach(group => {
@@ -574,23 +569,6 @@ const WEBHOOK_URL = "";
     document.getElementById('cardTop').style.display = 'none';
     show(6, 1);
   });
-
-  // Calculateur
-  const val = document.getElementById('val');
-  const fmt = n => Math.round(n).toLocaleString('fr-CA').replace(/ | /g,' ') + ' $';
-  function calc(){
-    const v = +val.value;
-    document.getElementById('valOut').textContent = fmt(v);
-    document.getElementById('trad').textContent = fmt(v * .05);
-    document.getElementById('ours').textContent = fmt(v * .01);
-    document.getElementById('save').textContent = fmt(v * .04);
-    val.style.setProperty('--p', ((v - val.min) / (val.max - val.min) * 100) + '%');
-  }
-  val.addEventListener('input', calc); calc();
-
-  // Bouton collant sur mobile quand le formulaire n'est plus visible
-  const sticky = document.getElementById('sticky');
-  new IntersectionObserver(([en]) => sticky.classList.toggle('show', !en.isIntersecting && cur <= TOTAL)).observe(document.getElementById('formulaire'));
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 })();

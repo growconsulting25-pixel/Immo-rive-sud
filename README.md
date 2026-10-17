@@ -1,6 +1,9 @@
 # Immo Rive-Sud : page « Vendre à 1% »
 
-Page d'atterrissage statique (`index.html` + `assets/`) pour les publicités Facebook. Le formulaire procède une question à la fois : adresse, délai, achat après la vente, coordonnées, puis meilleur moment pour joindre la personne.
+Page unique statique (`index.html` + `assets/`) pour les publicités Facebook. Le formulaire procède une question à la fois : adresse, délai, achat après la vente, coordonnées, puis meilleur moment pour joindre la personne.
+
+## Sélecteur d'adresse
+L'adresse est cherchée avec Photon (données OpenStreetMap). C'est gratuit et ça ne demande aucune clé API. La personne choisit son adresse dans la liste, puis ajoute son appartement ou son unité. Les champs `ville`, `code_postal`, `lat` et `lon` sont remplis automatiquement. Si l'adresse est introuvable, un lien permet de la taper à la main ; le lead porte alors `adresse_verifiee = non`.
 
 ## Recevoir les leads
 - **Netlify** : déployez le dossier tel quel. Les leads arrivent dans *Forms → vendre-1-pourcent*.
