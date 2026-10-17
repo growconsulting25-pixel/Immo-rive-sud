@@ -367,6 +367,9 @@
    WEBHOOK_URL : collez ici l'URL d'un webhook (Make, Zapier, GoHighLevel, etc.) pour recevoir chaque lead en JSON.
    Si vide et que le site est hébergé sur Netlify, les leads arrivent dans Netlify Forms. */
 const WEBHOOK_URL = "";
+/* GOOGLE_PLACES_KEY : clé API Google « Places API (New) », restreinte au domaine du site.
+   Si vide, la recherche d'adresse utilise Photon / OpenStreetMap (gratuit, mais incomplet). */
+const GOOGLE_PLACES_KEY = "";
 /* ================================== */
 
 (function(){
@@ -436,7 +439,7 @@ const WEBHOOK_URL = "";
   form.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => { if (validate(cur)) show(cur + 1, 1); }));
   back.addEventListener('click', () => cur > 1 && show(cur - 1, -1));
 
-  // ===== Sélecteur d'adresse (Photon / OpenStreetMap, sans clé API) =====
+  // ===== Sélecteur d'adresse : Google Places si une clé est fournie, sinon Photon / OpenStreetMap =====
   const addrInput = document.getElementById('addrInput');
   const addrList = document.getElementById('addrList');
   const addrSpin = document.getElementById('addrSpin');
@@ -456,7 +459,7 @@ const WEBHOOK_URL = "";
     } else {
       f.adresse.value = (u ? u + '-' : '') + a.l1 + ', ' + a.l2;
       f.ville.value = a.city; f.code_postal.value = a.postcode; f.lat.value = a.lat; f.lon.value = a.lon;
-      f.adresse_verifiee.value = 'oui';
+      f.adresse_verifiee.value = a.verified || 'oui';
     }
   }
 
@@ -466,12 +469,20 @@ const WEBHOOK_URL = "";
     let html = addr.items.map((it, i) => `<li role="option" id="ac-${i}" data-i="${i}" aria-selected="${i === addr.idx}">
       <span class="pin"><svg width="16" height="16" fill="none" stroke="#1974C3" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
       <div><b>${esc(it.l1)}</b><span>${esc(it.l2)}</span></div></li>`).join('');
-    if (!addr.items.length) html = `<li class="note">${/^\d/.test(q) ? 'Aucune adresse trouvée. Vérifiez l\'orthographe ou utilisez le lien ci-dessous.' : 'Commencez par le numéro civique (ex. 1250 rue Saint-Charles).'}</li>`;
-    else html += '<li class="attr">© OpenStreetMap</li>';
+    if (!addr.items.length) html = `<li class="note">${/^\d+[A-Za-z]?(\s+\S{0,10})?$/.test(q) ? 'Continuez avec le nom de la rue…' : /^\d/.test(q) ? 'Aucune adresse trouvée. Vérifiez l\'orthographe ou utilisez le lien ci-dessous.' : 'Commencez par le numéro civique (ex. 1250 rue Saint-Charles).'}</li>`;
+    else if (!GOOGLE_PLACES_KEY) html += '<li class="attr">© OpenStreetMap</li>';
     addrList.innerHTML = html;
     addrList.classList.add('open'); addrInput.setAttribute('aria-expanded','true');
     addrInput.setAttribute('aria-activedescendant', addr.idx >= 0 ? 'ac-' + addr.idx : '');
   }
+
+  // Zone de recherche : la province de Québec (les résultats hors Québec sont filtrés)
+  const ZONE = {s: 44.99, w: -79.77, n: 62.59, e: -57.1};
+  const norm = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const words = t => norm(t).split(/[^a-z0-9]+/).filter(Boolean);
+  const TYPES = new Set(['rue','r','boul','boulevard','bd','blvd','av','ave','avenue','ch','chemin','rang','montee','place','pl','croissant','crois','route','rte','terrasse','allee','cote','promenade','impasse','carre','square','street','st','road','rd']);
+  const ABBR = {st: 'saint', ste: 'sainte'};
+  const KIND = {r: 'rue', rue: 'rue', boul: 'boulevard', boulevard: 'boulevard', bd: 'boulevard', blvd: 'boulevard', av: 'avenue', ave: 'avenue', avenue: 'avenue', ch: 'chemin', chemin: 'chemin', rte: 'route', route: 'route', crois: 'croissant', croissant: 'croissant', pl: 'place', place: 'place', montee: 'montee', rang: 'rang'};
 
   async function search(raw){
     // « 12-345 rue X » ou « 345 rue X app 12 » : on sépare l'unité
@@ -479,28 +490,100 @@ const WEBHOOK_URL = "";
     let m = q.match(/^\s*([0-9]+[A-Za-z]?)\s*-\s*([0-9]+.*)$/); if (m){ unit = m[1]; q = m[2]; }
     m = q.match(/^(.*?)[,\s]+(?:app\.?|apt\.?|appartement|unité|unit|suite|#)\s*([0-9A-Za-z]+)\s*$/i); if (m){ unit = m[2]; q = m[1]; }
     addr.unitFromQuery = unit;
+    q = q.trim();
     if (q.length < 3){ closeList(); return; }
     const my = ++addr.seq; addrSpin.classList.add('on');
     try {
-      const url = 'https://photon.komoot.io/api/?' + new URLSearchParams({q, limit: 8, lang: 'fr', lat: 45.5, lon: -73.45, layer: 'house'});
-      const res = await fetch(url); const js = await res.json();
+      const items = GOOGLE_PLACES_KEY ? await searchGoogle(q) : await searchPhoton(q);
       if (my !== addr.seq) return;
-      const seen = new Set();
-      addr.items = js.features.filter(f => f.properties.state === 'Québec' && f.properties.housenumber).map(f => {
-        const p = f.properties;
-        return {l1: line1(p), l2: line2(p), city: p.city || p.district || '', postcode: p.postcode || '', lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0]};
-      }).filter(it => { const k = it.l1 + it.l2; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 5);
-      addr.idx = addr.items.length ? 0 : -1;
+      addr.items = items; addr.idx = items.length ? 0 : -1;
       renderList();
     } catch (e) {
       if (my === addr.seq){ addr.items = []; addrList.innerHTML = '<li class="note">Recherche indisponible. Utilisez le lien ci-dessous pour entrer votre adresse.</li>'; addrList.classList.add('open'); }
     } finally { if (my === addr.seq) addrSpin.classList.remove('on'); }
   }
 
-  function pick(i){
+  // --- Google Places (si une clé est configurée) ---
+  let gSession = '';
+  async function searchGoogle(q){
+    if (!gSession) gSession = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random());
+    const res = await fetch('https://places.googleapis.com/v1/places:autocomplete', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Goog-Api-Key': GOOGLE_PLACES_KEY},
+      body: JSON.stringify({
+        input: q, languageCode: 'fr', includedRegionCodes: ['ca'], sessionToken: gSession,
+        includedPrimaryTypes: ['street_address', 'premise', 'subpremise'],
+        locationRestriction: {rectangle: {low: {latitude: ZONE.s, longitude: ZONE.w}, high: {latitude: ZONE.n, longitude: ZONE.e}}}
+      })
+    });
+    if (!res.ok) throw new Error('Google ' + res.status);
+    const js = await res.json();
+    return (js.suggestions || []).filter(x => x.placePrediction && /\b(QC|Québec|Quebec)\b/.test(x.placePrediction.text.text)).slice(0, 5).map(x => {
+      const pp = x.placePrediction, sf = pp.structuredFormat || {};
+      return {l1: sf.mainText?.text || pp.text.text, l2: (sf.secondaryText?.text || '').replace(/, Canada$/, ''), placeId: pp.placeId, verified: 'oui'};
+    });
+  }
+  async function googleDetails(it){
+    const res = await fetch(`https://places.googleapis.com/v1/places/${it.placeId}?languageCode=fr&sessionToken=${encodeURIComponent(gSession)}`, {
+      headers: {'X-Goog-Api-Key': GOOGLE_PLACES_KEY, 'X-Goog-FieldMask': 'addressComponents,location'}
+    });
+    gSession = '';
+    if (!res.ok) return;
+    const d = await res.json(), c = t => (d.addressComponents || []).find(x => x.types.includes(t))?.longText || '';
+    const city = c('locality') || c('sublocality') || c('administrative_area_level_3');
+    it.city = city; it.postcode = c('postal_code');
+    if (d.location){ it.lat = d.location.latitude; it.lon = d.location.longitude; }
+    if (c('street_number') && c('route')) it.l1 = c('street_number') + ' ' + c('route');
+    it.l2 = [city, 'QC', it.postcode].filter(Boolean).join(', ').replace(', QC,', ', QC');
+    if (c('subpremise') && !unitInput.value) unitInput.value = c('subpremise');
+  }
+
+  // --- Photon / OpenStreetMap (gratuit, sans clé) ---
+  async function searchPhoton(q){
+    const num = (q.match(/^\s*(\d+[A-Za-z]?)\b/) || [])[1];
+    if (!num) return [];
+    let toks = words(q.slice(q.indexOf(num) + num.length)).map(t => ABBR[t] || t);
+    const kind = toks.length && TYPES.has(toks[0]) ? KIND[toks[0]] : '';
+    if (kind !== undefined && toks.length && TYPES.has(toks[0])) toks = toks.slice(1);
+    if (!toks.length) return [];
+    const url = 'https://photon.komoot.io/api/?' + new URLSearchParams({q, limit: 25, lang: 'fr', lat: 45.5, lon: -73.45, location_bias_scale: 0.1, bbox: [ZONE.w, ZONE.s, ZONE.e, ZONE.n].join(',')});
+    const js = await (await fetch(url)).json();
+    // Garder seulement les résultats qui correspondent vraiment à ce qui a été tapé
+    const ok = p => {
+      const sw = words(p.street || p.name || ''), cw = words(p.city || p.district || '');
+      let streetHit = false;
+      return toks.every(t => {
+        if (sw.some(w => w.startsWith(t))) { streetHit = true; return true; }
+        return streetHit && t.length >= 3 && cw.some(w => w.startsWith(t));
+      }) && streetHit;
+    };
+    const seen = new Set(), out = [];
+    for (const f of js.features){
+      const p = f.properties;
+      if (p.state !== 'Québec') continue;
+      if (!['house', 'street'].includes(p.type) || !ok(p)) continue;
+      const exact = p.type === 'house' && p.housenumber && norm(p.housenumber) === norm(num);
+      if (p.type === 'house' && !exact) continue;
+      const rk = KIND[words(p.street || p.name || '')[0]] || '';
+      const kindOff = kind && rk && rk !== kind ? 2 : 0;
+      const street = p.street || p.name, city = p.city || p.district || p.county || '';
+      const key = norm(num + street + city); if (seen.has(key)) continue; seen.add(key);
+      out.push({
+        l1: num + ' ' + street,
+        l2: [city, 'QC', exact ? p.postcode : ''].filter(Boolean).join(', ').replace(', QC,', ', QC'),
+        city, postcode: exact ? (p.postcode || '') : '',
+        lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0],
+        verified: exact ? 'oui' : 'rue seulement', rank: (exact ? 0 : 1) + kindOff
+      });
+    }
+    return out.sort((a, b) => a.rank - b.rank).slice(0, 5);
+  }
+
+  async function pick(i){
     const it = addr.items[i]; if (!it) return;
     addr.picked = it; closeList();
     if (addr.unitFromQuery && !unitInput.value) unitInput.value = addr.unitFromQuery;
+    if (it.placeId && !it.city) { try { await googleDetails(it); } catch (e) {} }
     document.getElementById('addrL1').textContent = it.l1;
     document.getElementById('addrL2').textContent = it.l2;
     document.getElementById('addrSearch').hidden = true;

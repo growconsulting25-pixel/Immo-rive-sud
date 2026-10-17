@@ -3,7 +3,11 @@
 Page unique statique (`index.html` + `assets/`) pour les publicités Facebook. Le formulaire procède une question à la fois : adresse, délai, achat après la vente, coordonnées, puis meilleur moment pour joindre la personne.
 
 ## Sélecteur d'adresse
-L'adresse est cherchée avec Photon (données OpenStreetMap). C'est gratuit et ça ne demande aucune clé API. La personne choisit son adresse dans la liste, puis ajoute son appartement ou son unité. Les champs `ville`, `code_postal`, `lat` et `lon` sont remplis automatiquement. Si l'adresse est introuvable, un lien permet de la taper à la main ; le lead porte alors `adresse_verifiee = non`.
+La recherche couvre toutes les adresses du Québec. La personne choisit son adresse dans la liste, puis ajoute son appartement ou son unité. Les champs `ville`, `code_postal`, `lat` et `lon` sont remplis automatiquement.
+
+- **Recommandé : Google Places.** Collez une clé « Places API (New) » dans `GOOGLE_PLACES_KEY`, en haut du `<script>` dans `index.html`, et restreignez la clé au domaine du site. Google connaît pratiquement toutes les adresses du Québec.
+- **Sans clé : Photon (OpenStreetMap).** C'est gratuit, mais certaines adresses manquent. Quand la rue est connue mais pas le numéro civique, l'adresse est quand même proposée et le lead porte `adresse_verifiee = rue seulement`.
+- **Adresse introuvable :** un lien permet de la taper à la main ; le lead porte alors `adresse_verifiee = non`.
 
 ## Recevoir les leads
 - **Netlify** : déployez le dossier tel quel. Les leads arrivent dans *Forms → vendre-1-pourcent*.
