@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Immo Rive-Sud | Vendez à 1% de commission</title>
+<meta name="description" content="Vendez votre propriété sur la Rive-Sud avec un courtier immobilier pour seulement 1% de commission. Réponse rapide, sans engagement.">
+<meta property="og:title" content="Vendez votre propriété pour seulement 1% de commission">
+<meta property="og:description" content="Service complet de courtage sur la Rive-Sud. Découvrez combien vous pourriez économiser.">
+<meta property="og:image" content="assets/logo-square.jpg">
+<meta name="theme-color" content="#24365E">
+<link rel="icon" href="assets/logo-square.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#24365E; --navy-2:#1B2A4B; --navy-3:#2E4472;
+    --blue:#1974C3; --blue-2:#1460A3; --blue-soft:#E8F1FB;
+    --ink:#14213D; --muted:#5B6782; --line:#DCE3EE; --bg:#F5F7FB; --white:#fff;
+    --ok:#12A150; --err:#D93838;
+    --radius:16px; --shadow:0 20px 50px -20px rgba(20,33,61,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+
+  /* Header */
+  header{background:var(--navy);position:sticky;top:0;z-index:20}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .nav img{height:58px;width:auto}
+  .nav-cta{background:var(--blue);color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:11px 18px;border-radius:999px;transition:background .2s}
+  .nav-cta:hover{background:var(--blue-2)}
+
+  /* Hero */
+  .hero{background:radial-gradient(1200px 500px at 85% -10%,var(--navy-3),transparent 60%),var(--navy);color:#fff;padding:56px 0 90px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(25,116,195,.18);border:1px solid rgba(110,170,230,.35);color:#CFE3F8;font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px;letter-spacing:.02em}
+  .badge i{width:8px;height:8px;border-radius:50%;background:#4CC38A;box-shadow:0 0 0 4px rgba(76,195,138,.2)}
+  h1{font-size:clamp(34px,5vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.02em;margin:20px 0 18px}
+  h1 .hl{color:#6FB4F2;white-space:nowrap}
+  .lead{font-size:18px;color:#C9D4E8;max-width:520px}
+  .trust{list-style:none;margin-top:32px;display:grid;gap:18px}
+  .trust li{display:flex;gap:14px;align-items:flex-start}
+  .trust .ic{flex:none;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:grid;place-items:center}
+  .trust b{display:block;font-size:16px}
+  .trust span{color:#AEBBD3;font-size:14.5px}
+
+  /* Form card */
+  .card{background:#fff;color:var(--ink);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+  .card-top{padding:20px 26px 0}
+  .step-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);font-weight:600}
+  .back{background:none;border:0;color:var(--muted);font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:6px 8px 6px 0;visibility:hidden}
+  .back.show{visibility:visible}
+  .back:hover{color:var(--blue)}
+  .bar{height:6px;background:var(--blue-soft);border-radius:99px;margin-top:10px;overflow:hidden}
+  .bar>div{height:100%;width:20%;background:linear-gradient(90deg,var(--blue),#4C9BE5);border-radius:99px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+  .steps{position:relative;padding:22px 26px 26px}
+  .step{display:none;animation:in .38s cubic-bezier(.2,.8,.2,1)}
+  .step.active{display:block}
+  .step.back-anim{animation:inBack .38s cubic-bezier(.2,.8,.2,1)}
+  @keyframes in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+  @keyframes inBack{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+  .q{font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+  .sub{color:var(--muted);font-size:15px;margin:6px 0 20px}
+  .opts{display:grid;gap:10px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:15px 16px;font:inherit;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s,transform .1s}
+  .opt:hover{border-color:#9CC3EA;background:#FAFCFF}
+  .opt:active{transform:scale(.99)}
+  .opt .dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #C3CEDF;display:grid;place-items:center;transition:all .15s}
+  .opt .em{font-size:20px;flex:none;width:26px;text-align:center}
+  .opt.sel{border-color:var(--blue);background:var(--blue-soft)}
+  .opt.sel .dot{border-color:var(--blue);background:var(--blue)}
+  .opt.sel .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+  .opt small{display:block;font-weight:500;color:var(--muted);font-size:13.5px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px}
+  .input{width:100%;font:inherit;font-size:16px;padding:15px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
+  .input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,116,195,.15)}
+  .input.bad{border-color:var(--err);box-shadow:0 0 0 4px rgba(217,56,56,.1)}
+  .input-ic{position:relative}
+  .input-ic svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none}
+  .input-ic .input{padding-left:46px}
+  .err{color:var(--err);font-size:13px;font-weight:600;margin-top:6px;display:none}
+  .err.show{display:block}
+  .btn{width:100%;margin-top:8px;border:0;border-radius:14px;background:var(--blue);color:#fff;font:inherit;font-size:17px;font-weight:800;padding:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s,transform .1s;box-shadow:0 10px 24px -10px rgba(25,116,195,.8)}
+  .btn:hover{background:var(--blue-2)}
+  .btn:active{transform:scale(.99)}
+  .btn[disabled]{opacity:.7;cursor:wait}
+  .fine{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;line-height:1.45}
+  .lock{display:flex;justify-content:center;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);margin-top:14px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chips .opt{justify-content:center;flex-direction:column;gap:4px;text-align:center;padding:16px 10px}
+  .chips .opt .em{width:auto}
+  .chips .opt.wide{grid-column:span 2;flex-direction:row}
+  .done{text-align:center;padding-top:20px}
+  .done .check{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;background:#E7F7EE;display:grid;place-items:center;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+  @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+  .recap{background:var(--bg);border-radius:14px;padding:14px 16px;text-align:left;margin-top:18px;font-size:14.5px}
+  .recap div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dashed var(--line)}
+  .recap div:last-child{border:0}
+  .recap span{color:var(--muted)}
+  .recap b{text-align:right}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+  /* Sections */
+  section{padding:84px 0}
+  .eyebrow{color:var(--blue);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+  h2{font-size:clamp(28px,3.6vw,40px);line-height:1.12;letter-spacing:-.02em;font-weight:800;margin:10px 0 14px}
+  .center{text-align:center;max-width:680px;margin:0 auto 44px}
+  .center p{color:var(--muted);font-size:17px}
+
+  /* Calculator */
+  .calc{background:#fff;border-radius:22px;box-shadow:0 10px 40px -24px rgba(20,33,61,.35);padding:34px;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;max-width:980px;margin:0 auto}
+  .calc label{font-weight:700;font-size:15px}
+  .price{font-size:40px;font-weight:800;letter-spacing:-.02em;margin:6px 0 14px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--blue) var(--p,40%),var(--blue-soft) var(--p,40%));outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:4px solid var(--blue);box-shadow:0 4px 12px rgba(0,0,0,.2);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--blue);cursor:pointer}
+  .range-l{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:8px}
+  .cmp{display:grid;gap:12px}
+  .cmp div{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:12px;background:var(--bg);font-weight:600}
+  .cmp .us{background:var(--blue-soft);color:var(--blue-2)}
+  .cmp .save{background:var(--navy);color:#fff;padding:18px 16px}
+  .cmp .save b{font-size:26px;color:#7CC0FF}
+  .calc .note{font-size:12px;color:var(--muted);margin-top:10px}
+
+  /* How */
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .how article{background:#fff;border-radius:18px;padding:28px;border:1px solid var(--line)}
+  .how .n{width:44px;height:44px;border-radius:12px;background:var(--navy);color:#fff;font-weight:800;display:grid;place-items:center;margin-bottom:16px}
+  .how h3{font-size:19px;margin-bottom:6px}
+  .how p{color:var(--muted);font-size:15.5px}
+
+  /* Included */
+  .inc{background:var(--navy);color:#fff}
+  .inc h2{color:#fff}
+  .inc .center p{color:#B9C6DD}
+  .inc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px;max-width:860px;margin:0 auto}
+  .inc-grid div{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1);font-weight:600}
+
+  /* FAQ */
+  .faq{max-width:760px;margin:0 auto}
+  details{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:0 20px}
+  summary{cursor:pointer;list-style:none;font-weight:700;font-size:16.5px;padding:18px 0;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:22px;color:var(--blue);line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--muted);padding-bottom:18px}
+
+  .final{background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;text-align:center;border-radius:24px;padding:54px 24px;max-width:980px;margin:0 auto}
+  .final h2{color:#fff}
+  .final p{color:#D6E4F7;margin-bottom:24px}
+  .final a{display:inline-block;background:#fff;color:var(--navy);text-decoration:none;font-weight:800;padding:16px 28px;border-radius:999px}
+
+  footer{background:var(--navy-2);color:#9FAECB;font-size:14px;padding:40px 0 calc(40px + env(safe-area-inset-bottom))}
+  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .foot img{height:44px;width:auto;margin-bottom:10px}
+  .legal{font-size:12px;margin-top:22px;border-top:1px solid rgba(255,255,255,.08);padding-top:18px;line-height:1.6}
+
+  /* Mobile sticky CTA */
+  .sticky{display:none}
+
+  @media (max-width:900px){
+    .hero{padding:28px 0 56px}
+    .hero-grid{grid-template-columns:1fr;gap:28px}
+    .hero-copy .trust{display:none}
+    .lead{font-size:16.5px}
+    .calc{grid-template-columns:1fr;padding:24px}
+    .how{grid-template-columns:1fr}
+    .inc-grid{grid-template-columns:1fr}
+    section{padding:60px 0}
+    .trust-m{display:grid!important}
+  }
+  @media (max-width:520px){
+    .wrap{padding:0 16px}
+    .nav{height:64px}.nav img{height:48px}
+    .nav-cta{font-size:14px;padding:9px 14px}
+    h1{margin:14px 0 12px}
+    .card{border-radius:18px}
+    .card-top{padding:16px 18px 0}
+    .steps{padding:18px 18px 22px;min-height:0}
+    .q{font-size:21px}
+    .row2{grid-template-columns:1fr}
+    .sticky{display:block;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;transform:translateY(140%);transition:transform .3s}
+    .sticky.show{transform:none}
+    .sticky a{display:block;text-align:center;background:var(--blue);color:#fff;text-decoration:none;font-weight:800;padding:16px;border-radius:14px;box-shadow:0 12px 30px -8px rgba(20,33,61,.6)}
+  }
+  .trust-m{display:none;list-style:none;gap:14px;margin-top:6px}
+  .trust-m li{display:flex;gap:12px;align-items:center;color:#C9D4E8;font-size:14.5px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#" aria-label="Immo Rive-Sud, accueil"><img src="assets/logo-wide.jpg" alt="Immo Rive-Sud"></a>
+    <a class="nav-cta" href="#formulaire">Vendre à 1%</a>
+  </div>
+</header>
+
+<!-- HERO + FORM -->
+<div class="hero" id="haut">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="badge"><i></i>Courtage immobilier · Rive-Sud de Montréal</span>
+      <h1>Vendez votre propriété pour <span class="hl">1% de commission</span> seulement.</h1>
+      <p class="lead">Un service de courtage complet, avec le même accompagnement, pour une fraction du prix. Remplissez le formulaire en 60 secondes et un courtier vous rappelle.</p>
+      <ul class="trust">
+        <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Gardez des milliers de dollars</b><span>1% au lieu des 4 à 5% habituellement demandés.</span></div></li>
+        <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span><div><b>Un service complet</b><span>Mise en marché, Centris, visites et négociation.</span></div></li>
+        <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Sans engagement</b><span>Vous restez libre de vos choix à chaque étape.</span></div></li>
+      </ul>
+    </div>
+
+    <div id="formulaire">
+      <div class="card" role="region" aria-label="Formulaire de vente à 1%">
+        <div class="card-top" id="cardTop">
+          <div class="step-meta">
+            <button type="button" class="back" id="back" aria-label="Étape précédente">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Retour
+            </button>
+            <span id="stepLabel">Étape 1 sur 5</span>
+          </div>
+          <div class="bar"><div id="barFill"></div></div>
+        </div>
+
+        <form id="leadForm" class="steps" name="vendre-1-pourcent" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="vendre-1-pourcent">
+          <p class="hp"><label>Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <input type="hidden" name="delai">
+          <input type="hidden" name="achat">
+          <input type="hidden" name="moment">
+          <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_content"><input type="hidden" name="fbclid">
+
+          <!-- 1. Adresse -->
+          <div class="step active" data-step="1">
+            <p class="q">Quelle est l'adresse de la propriété à vendre?</p>
+            <p class="sub">On s'en sert pour estimer combien vous pourriez économiser.</p>
+            <div class="field">
+              <div class="input-ic">
+                <svg width="20" height="20" fill="none" stroke="#1974C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                <input class="input" id="adresse" name="adresse" type="text" autocomplete="street-address" placeholder="Ex. 123 rue Principale, Longueuil" aria-label="Adresse de la propriété">
+              </div>
+              <p class="err" id="err-adresse">Entrez l'adresse de la propriété pour continuer.</p>
+            </div>
+            <button type="button" class="btn" data-next>Continuer
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="lock"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gratuit, confidentiel et sans engagement</p>
+          </div>
+
+          <!-- 2. Délai -->
+          <div class="step" data-step="2">
+            <p class="q">Dans quel délai souhaitez-vous vendre?</p>
+            <p class="sub">Choisissez la réponse qui vous ressemble le plus.</p>
+            <div class="opts" data-field="delai">
+              <button type="button" class="opt" data-value="Le plus tôt possible"><span class="em">⚡</span>Le plus tôt possible</button>
+              <button type="button" class="opt" data-value="D'ici 3 mois"><span class="em">📅</span>D'ici 3 mois</button>
+              <button type="button" class="opt" data-value="3 à 6 mois"><span class="em">🗓️</span>Dans 3 à 6 mois</button>
+              <button type="button" class="opt" data-value="6 à 12 mois"><span class="em">⏳</span>Dans 6 à 12 mois</button>
+              <button type="button" class="opt" data-value="Je m'informe seulement"><span class="em">💡</span>Je m'informe seulement</button>
+            </div>
+          </div>
+
+          <!-- 3. Achat -->
+          <div class="step" data-step="3">
+            <p class="q">Souhaitez-vous acheter une propriété après la vente?</p>
+            <p class="sub">On peut aussi vous accompagner pour votre prochain achat.</p>
+            <div class="opts" data-field="achat">
+              <button type="button" class="opt" data-value="Oui, sur la Rive-Sud"><span class="em">🏡</span>Oui, sur la Rive-Sud</button>
+              <button type="button" class="opt" data-value="Oui, ailleurs"><span class="em">📍</span>Oui, dans une autre région</button>
+              <button type="button" class="opt" data-value="Non"><span class="em">🔑</span>Non, pas d'achat prévu</button>
+              <button type="button" class="opt" data-value="Pas encore décidé"><span class="em">🤔</span>Je ne sais pas encore</button>
+            </div>
+          </div>
+
+          <!-- 4. Coordonnées -->
+          <div class="step" data-step="4">
+            <p class="q">À qui doit-on envoyer les détails?</p>
+            <p class="sub">Un courtier vous rappelle pour vous expliquer l'offre à 1%.</p>
+            <div class="field">
+              <label for="nom">Nom complet</label>
+              <input class="input" id="nom" name="nom" type="text" autocomplete="name" placeholder="Prénom et nom">
+              <p class="err" id="err-nom">Entrez votre nom.</p>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="telephone">Téléphone</label>
+                <input class="input" id="telephone" name="telephone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(450) 555-1234">
+                <p class="err" id="err-telephone">Entrez un numéro à 10 chiffres.</p>
+              </div>
+              <div class="field">
+                <label for="courriel">Courriel</label>
+                <input class="input" id="courriel" name="courriel" type="email" inputmode="email" autocomplete="email" placeholder="vous@exemple.com">
+                <p class="err" id="err-courriel">Entrez un courriel valide.</p>
+              </div>
+            </div>
+            <button type="button" class="btn" data-next>Dernière étape
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+
+          <!-- 5. Moment -->
+          <div class="step" data-step="5">
+            <p class="q">Quel est le meilleur moment pour vous joindre?</p>
+            <p class="sub">On respecte votre horaire.</p>
+            <div class="chips" data-field="moment">
+              <button type="button" class="opt" data-value="Matin (8h-12h)"><span class="em">🌅</span>Matin<small>8 h à 12 h</small></button>
+              <button type="button" class="opt" data-value="Après-midi (12h-17h)"><span class="em">☀️</span>Après-midi<small>12 h à 17 h</small></button>
+              <button type="button" class="opt" data-value="Soir (17h-20h)"><span class="em">🌙</span>Soir<small>17 h à 20 h</small></button>
+              <button type="button" class="opt" data-value="Fin de semaine"><span class="em">📆</span>Fin de semaine<small>Samedi ou dimanche</small></button>
+              <button type="button" class="opt wide" data-value="N'importe quand"><span class="em">👍</span>N'importe quand</button>
+            </div>
+            <p class="err" id="err-moment">Choisissez un moment.</p>
+            <button type="submit" class="btn" id="submitBtn">Envoyer ma demande</button>
+            <p class="fine">En envoyant, vous acceptez d'être contacté par Immo Rive-Sud au sujet de votre projet. Vos renseignements restent confidentiels et ne sont jamais revendus.</p>
+          </div>
+
+          <!-- Merci -->
+          <div class="step" data-step="6">
+            <div class="done">
+              <div class="check"><svg width="38" height="38" fill="none" stroke="#12A150" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <p class="q">Merci <span id="thxName"></span>, c'est reçu!</p>
+              <p class="sub" style="margin-bottom:0">Un courtier vous contacte <b id="thxMoment">bientôt</b> pour vous expliquer l'offre à 1%.</p>
+              <div class="recap" id="recap"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <ul class="trust-m" style="margin-top:20px">
+        <li>✅ 1% au lieu des 4 à 5% habituellement demandés</li>
+        <li>✅ Service complet : Centris, visites et négociation</li>
+        <li>✅ Gratuit et sans engagement</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<section id="economies">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Calculateur d'économies</span>
+      <h2>Combien gardez-vous dans vos poches?</h2>
+      <p>Glissez le curseur selon la valeur approximative de votre propriété.</p>
+    </div>
+    <div class="calc">
+      <div>
+        <label for="val">Valeur de la propriété</label>
+        <div class="price" id="valOut">500 000 $</div>
+        <input type="range" id="val" min="200000" max="1500000" step="10000" value="500000" aria-label="Valeur de la propriété">
+        <div class="range-l"><span>200 000 $</span><span>1 500 000 $</span></div>
+        <p class="note">Estimation de la commission seulement, avant taxes. La commission traditionnelle est calculée ici à 5%, mais elle varie d'une agence à l'autre.</p>
+      </div>
+      <div class="cmp">
+        <div><span>Commission traditionnelle (5%)</span><b id="trad">25 000 $</b></div>
+        <div class="us"><span>Immo Rive-Sud (1%)</span><b id="ours">5 000 $</b></div>
+        <div class="save"><span>Vous économisez</span><b id="save">20 000 $</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Comment ça marche</span>
+      <h2>Trois étapes simples</h2>
+    </div>
+    <div class="how">
+      <article><div class="n">1</div><h3>Remplissez le formulaire</h3><p>60 secondes : votre adresse, votre délai et vos coordonnées.</p></article>
+      <article><div class="n">2</div><h3>Un courtier vous rappelle</h3><p>Au moment qui vous convient, pour discuter de votre propriété et du prix à demander.</p></article>
+      <article><div class="n">3</div><h3>Vendez à 1%</h3><p>Mise en marché, visites et négociation. Vous gardez la différence.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="inc">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow" style="color:#7CC0FF">Tout est inclus</span>
+      <h2>Un service complet pour 1%</h2>
+      <p>Pas une version allégée. Tout ce qu'il faut pour vendre au meilleur prix.</p>
+    </div>
+    <div class="inc-grid">
+      <div>✔️ Inscription sur Centris.ca</div>
+      <div>✔️ Analyse comparative du marché</div>
+      <div>✔️ Photos professionnelles</div>
+      <div>✔️ Publicité sur les réseaux sociaux</div>
+      <div>✔️ Gestion des visites</div>
+      <div>✔️ Négociation des offres</div>
+      <div>✔️ Suivi jusque chez le notaire</div>
+      <div>✔️ Courtier immobilier certifié OACIQ</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Questions fréquentes</span>
+      <h2>Vos questions, nos réponses</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Est-ce vraiment 1% de commission?</summary><p>Oui. Notre commission est de 1% du prix de vente, plus taxes. Votre courtier vous remettra tous les détails par écrit avant la signature du contrat de courtage.</p></details>
+      <details><summary>Comment pouvez-vous offrir 1%?</summary><p>Nous misons sur un processus efficace et un volume de ventes plus élevé sur la Rive-Sud. Ça nous permet de réduire la commission sans réduire le service.</p></details>
+      <details><summary>Est-ce que ma propriété sera sur Centris?</summary><p>Oui. Votre propriété est inscrite sur Centris.ca, comme avec n'importe quel courtier.</p></details>
+      <details><summary>Est-ce que je m'engage en remplissant le formulaire?</summary><p>Non. Le formulaire sert seulement à ce qu'un courtier vous rappelle. Vous décidez ensuite si l'offre vous convient.</p></details>
+      <details><summary>Quels secteurs desservez-vous?</summary><p>Toute la Rive-Sud de Montréal : Longueuil, Brossard, Saint-Hubert, Boucherville, Saint-Lambert, La Prairie, Candiac, Chambly, Saint-Bruno et les environs.</p></details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="final">
+      <h2>Prêt à garder plus de votre vente?</h2>
+      <p>60 secondes, aucun engagement.</p>
+      <a href="#formulaire">Commencer maintenant</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <img src="assets/logo-wide.jpg" alt="Immo Rive-Sud">
+        <div>Courtage immobilier sur la Rive-Sud de Montréal</div>
+      </div>
+      <div>
+        <!-- À COMPLÉTER : coordonnées réelles -->
+        <div>📞 <a href="tel:+14505550000">450 555-0000</a></div>
+        <div>✉️ <a href="mailto:info@immorivesud.ca">info@immorivesud.ca</a></div>
+      </div>
+    </div>
+    <div class="legal">
+      <!-- À COMPLÉTER : la publicité d'un courtier doit l'identifier (nom, titre, agence). -->
+      [Nom du courtier], courtier immobilier résidentiel · [Nom de l'agence], agence immobilière. Commission de 1% du prix de vente, plus taxes, selon les conditions prévues au contrat de courtage. Les économies affichées sont des estimations.<br>
+      Vos renseignements personnels sont traités conformément à la Loi 25 sur la protection des renseignements personnels au Québec. © <span id="yr"></span> Immo Rive-Sud.
+    </div>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky"><a href="#formulaire">Vendre à 1% de commission →</a></div>
+
+<script>
+/* ========= CONFIGURATION =========
+   WEBHOOK_URL : collez ici l'URL d'un webhook (Make, Zapier, GoHighLevel, etc.) pour recevoir chaque lead en JSON.
+   Si vide et que le site est hébergé sur Netlify, les leads arrivent dans Netlify Forms. */
+const WEBHOOK_URL = "";
+/* ================================== */
+
+(function(){
+  const form = document.getElementById('leadForm');
+  const steps = [...form.querySelectorAll('.step')];
+  const TOTAL = 5;
+  const back = document.getElementById('back');
+  const label = document.getElementById('stepLabel');
+  const bar = document.getElementById('barFill');
+  let cur = 1;
+
+  // UTM / fbclid pour suivre les campagnes Facebook
+  const qs = new URLSearchParams(location.search);
+  ['utm_source','utm_medium','utm_campaign','utm_content','fbclid'].forEach(k => { if (qs.get(k)) form.elements[k].value = qs.get(k); });
+
+  function show(n, dir){
+    steps.forEach(s => s.classList.remove('active','back-anim'));
+    const el = steps.find(s => +s.dataset.step === n);
+    el.classList.add('active'); if (dir < 0) el.classList.add('back-anim');
+    cur = n;
+    if (n <= TOTAL){
+      label.textContent = `Étape ${n} sur ${TOTAL}`;
+      bar.style.width = (n / TOTAL * 100) + '%';
+    }
+    back.classList.toggle('show', n > 1 && n <= TOTAL);
+    const first = el.querySelector('input.input');
+    if (first && window.innerWidth > 520) setTimeout(() => first.focus({preventScroll:true}), 60);
+    // Garder le formulaire visible sur mobile
+    const card = document.getElementById('formulaire');
+    const top = card.getBoundingClientRect().top;
+    if (top < 60 || top > window.innerHeight * .5) window.scrollTo({top: window.scrollY + top - 80, behavior:'smooth'});
+  }
+
+  function setErr(id, on){
+    const e = document.getElementById('err-' + id); if (e) e.classList.toggle('show', on);
+    const i = document.getElementById(id); if (i) i.classList.toggle('bad', on);
+    return !on;
+  }
+  const digits = v => v.replace(/\D/g,'');
+  function validate(n){
+    const f = form.elements;
+    if (n === 1) return setErr('adresse', f.adresse.value.trim().length < 5);
+    if (n === 4){
+      let ok = setErr('nom', f.nom.value.trim().length < 2);
+      const d = digits(f.telephone.value);
+      ok = setErr('telephone', !(d.length === 10 || (d.length === 11 && d[0] === '1'))) && ok;
+      ok = setErr('courriel', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.courriel.value.trim())) && ok;
+      if (!ok) { const bad = form.querySelector('.step.active .input.bad'); bad && bad.focus(); }
+      return ok;
+    }
+    if (n === 5) return setErr('moment', !f.moment.value);
+    return true;
+  }
+
+  form.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => { if (validate(cur)) show(cur + 1, 1); }));
+  back.addEventListener('click', () => cur > 1 && show(cur - 1, -1));
+
+  // Choix de réponses : sélection + avance automatique (style Facebook)
+  form.querySelectorAll('[data-field]').forEach(group => {
+    const name = group.dataset.field;
+    group.querySelectorAll('.opt').forEach(opt => opt.addEventListener('click', () => {
+      group.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+      opt.classList.add('sel');
+      form.elements[name].value = opt.dataset.value;
+      setErr(name, false);
+      if (name !== 'moment') setTimeout(() => show(cur + 1, 1), 260);
+    }));
+    group.querySelectorAll('.opt').forEach(o => o.insertAdjacentHTML('afterbegin', group.classList.contains('chips') ? '' : '<span class="dot"></span>'));
+  });
+
+  // Touche Entrée = continuer
+  form.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT'){
+      e.preventDefault();
+      if (cur === 5) return;
+      if (validate(cur)) show(cur + 1, 1);
+    }
+  });
+  ['adresse','nom','telephone','courriel'].forEach(id => document.getElementById(id).addEventListener('input', () => setErr(id, false)));
+
+  // Format du téléphone (450) 555-1234
+  const tel = document.getElementById('telephone');
+  tel.addEventListener('input', () => {
+    let d = digits(tel.value); if (d.length === 11 && d[0] === '1') d = d.slice(1); d = d.slice(0,10);
+    tel.value = d.length > 6 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0,3)}) ${d.slice(3)}` : d;
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!validate(5)) return;
+    if (form.elements['bot-field'].value) return; // robot
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Envoi en cours…';
+    const data = Object.fromEntries(new FormData(form));
+    delete data['bot-field'];
+    data.date = new Date().toISOString(); data.page = location.href;
+    try {
+      if (WEBHOOK_URL) {
+        await fetch(WEBHOOK_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+      } else {
+        await fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString()});
+      }
+    } catch (err) { console.warn('Envoi du lead échoué', err); }
+    // Événement Lead pour le Pixel Facebook (si installé)
+    if (window.fbq) fbq('track', 'Lead', {content_name: 'Vendre à 1%'});
+    if (window.dataLayer) dataLayer.push({event: 'lead_submit'});
+
+    document.getElementById('thxName').textContent = data.nom.trim().split(' ')[0];
+    const when = {'Matin (8h-12h)':'en matinée','Après-midi (12h-17h)':'en après-midi','Soir (17h-20h)':'en soirée','Fin de semaine':'la fin de semaine'};
+    document.getElementById('thxMoment').textContent = when[data.moment] || 'très bientôt';
+    const rows = [['Adresse', data.adresse],['Délai', data.delai],['Achat après', data.achat],['Téléphone', data.telephone]];
+    document.getElementById('recap').innerHTML = rows.map(([k,v]) => `<div><span>${k}</span><b></b></div>`).join('');
+    document.querySelectorAll('#recap b').forEach((b,i) => b.textContent = rows[i][1]);
+    document.getElementById('cardTop').style.display = 'none';
+    show(6, 1);
+  });
+
+  // Calculateur
+  const val = document.getElementById('val');
+  const fmt = n => Math.round(n).toLocaleString('fr-CA').replace(/ | /g,' ') + ' $';
+  function calc(){
+    const v = +val.value;
+    document.getElementById('valOut').textContent = fmt(v);
+    document.getElementById('trad').textContent = fmt(v * .05);
+    document.getElementById('ours').textContent = fmt(v * .01);
+    document.getElementById('save').textContent = fmt(v * .04);
+    val.style.setProperty('--p', ((v - val.min) / (val.max - val.min) * 100) + '%');
+  }
+  val.addEventListener('input', calc); calc();
+
+  // Bouton collant sur mobile quand le formulaire n'est plus visible
+  const sticky = document.getElementById('sticky');
+  new IntersectionObserver(([en]) => sticky.classList.toggle('show', !en.isIntersecting && cur <= TOTAL)).observe(document.getElementById('formulaire'));
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
