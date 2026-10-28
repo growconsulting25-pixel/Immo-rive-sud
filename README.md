@@ -11,7 +11,8 @@ La recherche couvre toutes les adresses du Québec. La personne choisit son adre
 
 ## Recevoir les leads
 - **Netlify** : déployez le dossier tel quel. Les leads arrivent dans *Forms → vendre-1-pourcent*.
-- **Webhook** (Make, Zapier, GoHighLevel…) : collez l'URL dans `WEBHOOK_URL`, en haut du `<script>` dans `index.html`. Chaque lead est envoyé en JSON.
+- **GoHighLevel** (ou Make, Zapier…) : collez l'URL du webhook entrant dans `WEBHOOK_URL`, en haut du `<script>` dans `index.html`. Chaque lead y est envoyé en plus de Netlify Forms.
+  Champs envoyés : `prenom`, `nom_famille`, `nom`, `telephone`, `courriel`, `adresse`, `unite`, `adresse_complete`, `ville`, `code_postal`, `delai`, `achat`, `moment`, `utm_*`, `fbclid`, `page`, `date`.
 
 Les paramètres UTM et le `fbclid` sont enregistrés avec chaque lead. Si le Pixel Facebook est installé, l'envoi déclenche l'événement `Lead`.
 

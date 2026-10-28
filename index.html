@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Immo Rive-Sud | Vendez à 1% de commission</title>
-<meta name="description" content="Vendez votre propriété sur la Rive-Sud avec un courtier immobilier pour seulement 1% de commission. Réponse rapide, sans engagement.">
-<meta property="og:title" content="Vendez votre propriété pour seulement 1% de commission">
+<title>Immo Rive-Sud | Vendez à partir de 1% de commission</title>
+<meta name="description" content="Vendez votre propriété sur la Rive-Sud avec un courtier immobilier à partir de 1% de commission. Réponse rapide, sans engagement.">
+<meta property="og:title" content="Vendez votre propriété à partir de 1% de commission">
 <meta property="og:description" content="Service complet de courtage sur la Rive-Sud. Découvrez combien vous pourriez économiser.">
 <meta property="og:image" content="assets/logo-square.jpg">
 <meta name="theme-color" content="#24365E">
@@ -79,6 +79,7 @@
   .opt small{display:block;font-weight:500;color:var(--muted);font-size:13.5px}
   .field{margin-bottom:14px}
   .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px}
+  .field label .req{color:#D93025}
   .input{width:100%;font:inherit;font-size:16px;padding:15px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}
   .input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,116,195,.15)}
   .input.bad{border-color:var(--err);box-shadow:0 0 0 4px rgba(217,56,56,.1)}
@@ -183,7 +184,7 @@
 <header>
   <div class="wrap nav">
     <a href="#" aria-label="Immo Rive-Sud, accueil"><img src="assets/logo-wide.jpg" alt="Immo Rive-Sud"></a>
-    <a class="nav-cta" href="#formulaire" id="navCta">Obtenir mon offre à 1%</a>
+    <a class="nav-cta" href="#formulaire" id="navCta">Obtenir mon évaluation</a>
   </div>
 </header>
 
@@ -192,17 +193,17 @@
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <span class="badge"><i></i>Courtage immobilier · Rive-Sud de Montréal</span>
-      <h1>Vendez votre propriété pour <span class="hl">1% de commission</span> seulement.</h1>
+      <h1>Vendez votre propriété à partir de <span class="hl">1% de commission</span>.</h1>
       <p class="lead">Un service de courtage complet, pour une fraction du prix. Répondez à 5 questions et un courtier vous rappelle.</p>
       <ul class="trust">
-        <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Gardez des milliers de dollars</b><span>1% au lieu des 4 à 5% habituellement demandés.</span></div></li>
+        <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Gardez des milliers de dollars</b><span>À partir de 1% au lieu des 4 à 5% habituellement demandés.</span></div></li>
         <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span><div><b>Un service complet</b><span>Mise en marché, Centris, visites et négociation.</span></div></li>
         <li><span class="ic"><svg width="22" height="22" fill="none" stroke="#6FB4F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Sans engagement</b><span>Vous restez libre de vos choix à chaque étape.</span></div></li>
       </ul>
     </div>
 
     <div id="formulaire">
-      <div class="card" role="region" aria-label="Formulaire de vente à 1%">
+      <div class="card" role="region" aria-label="Formulaire de vente à partir de 1%">
         <div class="card-top" id="cardTop">
           <div class="step-meta">
             <button type="button" class="back" id="back" aria-label="Étape précédente">
@@ -280,21 +281,21 @@
           <!-- 4. Coordonnées -->
           <div class="step" data-step="4">
             <p class="q">À qui doit-on envoyer les détails?</p>
-            <p class="sub">Un courtier vous rappelle pour vous expliquer l'offre à 1%.</p>
+            <p class="sub">Un courtier vous rappelle pour vous expliquer l'offre à partir de 1%.</p>
             <div class="field">
-              <label for="nom">Nom complet</label>
-              <input class="input" id="nom" name="nom" type="text" autocomplete="name" placeholder="Prénom et nom">
+              <label for="nom">Nom complet <span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="nom" name="nom" type="text" autocomplete="name" required aria-required="true" placeholder="Prénom et nom">
               <p class="err" id="err-nom">Entrez votre nom.</p>
             </div>
             <div class="row2">
               <div class="field">
-                <label for="telephone">Téléphone</label>
-                <input class="input" id="telephone" name="telephone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(450) 555-1234">
+                <label for="telephone">Téléphone <span class="req" aria-hidden="true">*</span></label>
+                <input class="input" id="telephone" name="telephone" type="tel" inputmode="tel" autocomplete="tel" required aria-required="true" placeholder="(450) 555-1234">
                 <p class="err" id="err-telephone">Entrez un numéro à 10 chiffres.</p>
               </div>
               <div class="field">
-                <label for="courriel">Courriel</label>
-                <input class="input" id="courriel" name="courriel" type="email" inputmode="email" autocomplete="email" placeholder="vous@exemple.com">
+                <label for="courriel">Courriel <span class="req" aria-hidden="true">*</span></label>
+                <input class="input" id="courriel" name="courriel" type="email" inputmode="email" autocomplete="email" required aria-required="true" placeholder="vous@exemple.com">
                 <p class="err" id="err-courriel">Entrez un courriel valide.</p>
               </div>
             </div>
@@ -323,15 +324,16 @@
           <div class="step" data-step="6">
             <div class="done">
               <div class="check"><svg width="38" height="38" fill="none" stroke="#12A150" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
-              <p class="q">Merci <span id="thxName"></span>, c'est reçu!</p>
-              <p class="sub" style="margin-bottom:0">Un courtier vous contacte <b id="thxMoment">bientôt</b> pour vous expliquer l'offre à 1%.</p>
+              <p class="q">Merci <span id="thxName"></span> pour votre intérêt!</p>
+              <p class="sub" style="margin-bottom:0">Un conseiller vous contactera sous peu <b id="thxMoment"></b> afin de vous remettre une évaluation de votre propriété.</p>
               <div class="recap" id="recap"></div>
             </div>
           </div>
         </form>
       </div>
       <ul class="trust-m" style="margin-top:20px">
-        <li>✅ 1% au lieu des 4 à 5% habituellement demandés</li>
+        <li>✅ À partir de 1% au lieu des 4 à 5% habituellement demandés</li>
+        <li>✅ Une évaluation de votre propriété vous sera remise</li>
         <li>✅ Service complet : Centris, visites et négociation</li>
         <li>✅ Gratuit et sans engagement</li>
       </ul>
@@ -343,12 +345,12 @@
   <div class="wrap f-top">
     <div>
       <img src="assets/logo-light.png" alt="Immo Rive-Sud">
-      <p>Vendez votre propriété sur la Rive-Sud de Montréal avec un service de courtage complet, pour seulement 1% de commission.</p>
+      <p>Vendez votre propriété sur la Rive-Sud de Montréal avec un service de courtage complet, à partir de 1% de commission.</p>
     </div>
     <div>
       <h4>Liens</h4>
       <ul>
-        <li><a href="#formulaire" class="to-form">Vendre à 1%</a></li>
+        <li><a href="#formulaire" class="to-form">Vendre à partir de 1%</a></li>
         <li><a href="#formulaire" class="to-form">Obtenir mon offre</a></li>
       </ul>
     </div>
@@ -366,15 +368,15 @@
       <span>© <span id="yr"></span> Immo Rive-Sud. Tous droits réservés.</span>
       <span>Données traitées selon les normes québécoises de protection de la vie privée (Loi 25).</span>
       <!-- À COMPLÉTER : la publicité d'un courtier doit l'identifier (nom, titre, agence). -->
-      <span class="f-legal">[Nom du courtier], courtier immobilier résidentiel · [Nom de l'agence], agence immobilière. Commission de 1% du prix de vente, plus taxes, selon les conditions du contrat de courtage.</span>
+      <span class="f-legal">[Nom du courtier], courtier immobilier résidentiel · [Nom de l'agence], agence immobilière. Commission à partir de 1% du prix de vente, plus taxes, selon les conditions du contrat de courtage.</span>
     </div>
   </div>
 </footer>
 
 <script>
 /* ========= CONFIGURATION =========
-   WEBHOOK_URL : collez ici l'URL d'un webhook (Make, Zapier, GoHighLevel, etc.) pour recevoir chaque lead en JSON.
-   Si vide et que le site est hébergé sur Netlify, les leads arrivent dans Netlify Forms. */
+   WEBHOOK_URL : collez ici l'URL du webhook entrant GoHighLevel (ou Make, Zapier…) pour recevoir chaque lead dans votre CRM.
+   Les leads arrivent aussi toujours dans Netlify Forms (copie de sécurité). */
 const WEBHOOK_URL = "";
 /* GOOGLE_PLACES_KEY : clé API Google « Places API (New) », restreinte au domaine du site.
    Si vide, la recherche d'adresse utilise Photon / OpenStreetMap (gratuit, mais incomplet). */
@@ -676,20 +678,20 @@ const GOOGLE_PLACES_KEY = "";
     const data = Object.fromEntries(new FormData(form));
     delete data['bot-field'];
     data.date = new Date().toISOString(); data.page = location.href;
-    try {
-      if (WEBHOOK_URL) {
-        await fetch(WEBHOOK_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
-      } else {
-        await fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString()});
-      }
-    } catch (err) { console.warn('Envoi du lead échoué', err); }
+    const parts = data.nom.trim().split(/\s+/);
+    data.prenom = parts[0]; data.nom_famille = parts.slice(1).join(' ');
+    data.adresse_complete = data.adresse + (data.unite ? ', unité ' + data.unite : '');
+    // Netlify Forms (copie de sécurité) + webhook CRM. « no-cors » + format formulaire : aucun blocage CORS côté navigateur.
+    const sends = [fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString()})];
+    if (WEBHOOK_URL) sends.push(fetch(WEBHOOK_URL, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)}));
+    (await Promise.allSettled(sends)).forEach(r => { if (r.status === 'rejected') console.warn('Envoi du lead échoué', r.reason); });
     // Événement Lead pour le Pixel Facebook (si installé)
     if (window.fbq) fbq('track', 'Lead', {content_name: 'Vendre à 1%'});
     if (window.dataLayer) dataLayer.push({event: 'lead_submit'});
 
     document.getElementById('thxName').textContent = data.nom.trim().split(' ')[0];
     const when = {'Matin (8h-12h)':'en matinée','Après-midi (12h-17h)':'en après-midi','Soir (17h-20h)':'en soirée','Fin de semaine':'la fin de semaine'};
-    document.getElementById('thxMoment').textContent = when[data.moment] || 'très bientôt';
+    document.getElementById('thxMoment').textContent = when[data.moment] ? '(' + when[data.moment] + ')' : '';
     const rows = [['Adresse', data.adresse],['Délai', data.delai],['Achat après', data.achat],['Téléphone', data.telephone]];
     document.getElementById('recap').innerHTML = rows.map(([k,v]) => `<div><span>${k}</span><b></b></div>`).join('');
     document.querySelectorAll('#recap b').forEach((b,i) => b.textContent = rows[i][1]);
